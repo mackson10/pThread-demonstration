@@ -1,4 +1,4 @@
-#define N 100000
+#define N 500000
 #include <stdlib.h>
 #include <stdio.h> 
 #include <pthread.h> 
@@ -59,7 +59,7 @@ int main()
 {   
     srand(time(NULL));
     for(int i = 0; i < N; i++){
-        VET[i] = 1 + rand() % 100;
+        VET[i] = 1 + rand() % 10;
     }
     
     //array antes 
@@ -81,7 +81,8 @@ int main()
     //array depois
     /*
     for(int i = 0;VET[i] != 0; i++){
-        printf("%d \n", VET[i]);
+	if(VET[i] % 2 == 0 || primo(VET[i]) == 1)
+        	printf("%d \n", VET[i]);
     }
     */
 
