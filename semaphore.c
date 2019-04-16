@@ -23,12 +23,11 @@ int primo(int numero){
 }
 
 void moveVetorEsquerda(int start){
-    for(int i = start - 1; i < N; i++){
-        if(i == N - 1 || VET[i + 1] == 0){
+    for(int i = start - 1; i < N && VET[i] != 0; i++){
+        if(i == N - 1)
             VET[i] = 0;
-            break;
-        }
-        VET[i] = VET[i + 1];
+        else
+            VET[i] = VET[i + 1];
     }
 }
 
@@ -63,7 +62,8 @@ int main()
         VET[i] = 1 + rand() % 100;
     }
     
-    /*array antes
+    //array antes 
+    /*
     for(int i = 0;VET[i] != 0; i++){
         printf("%d \n", VET[i]);
     }
@@ -72,13 +72,14 @@ int main()
 
     sem_init(&mutex, 0, 1);
     pthread_t t1,t2;
-    pthread_create(&t1, NULL, retiraPar, VET);
-    pthread_create(&t2, NULL, retiraPrimo, VET); 
+    pthread_create(&t1, NULL, retiraPar, NULL);
+    pthread_create(&t2, NULL, retiraPrimo, NULL); 
     pthread_join(t1,NULL);
     pthread_join(t2,NULL);
     sem_destroy(&mutex);
     
-    /*array depois
+    //array depois
+    /*
     for(int i = 0;VET[i] != 0; i++){
         printf("%d \n", VET[i]);
     }
