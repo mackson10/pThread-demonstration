@@ -1,10 +1,9 @@
-#define N 500000
+#define N 100
 #include <stdlib.h>
 #include <stdio.h> 
 #include <pthread.h> 
 #include <semaphore.h>
 #include <time.h>
-
 
 sem_t mutex;
 int VET[N];
@@ -23,7 +22,7 @@ int primo(int numero){
 }
 
 void moveVetorEsquerda(int start){
-    for(int i = start - 1; i < N && VET[i] != 0; i++){
+    for(int i = start - 1; i < N; i++){
         if(i == N - 1)
             VET[i] = 0;
         else
@@ -34,9 +33,12 @@ void moveVetorEsquerda(int start){
 void* retiraPar(void* arg) 
 {
     sem_wait(&mutex);
-    for(int i = N - 1; i >= 0; i--){
+    for(int i = 0; i < N && VET[i] != 0;){
         if(VET[i] % 2 == 0){
             moveVetorEsquerda(i + 1);
+            
+        }else{
+            i++;
         }
     }
     sem_post(&mutex);
@@ -46,9 +48,11 @@ void* retiraPar(void* arg)
 void* retiraPrimo(void* arg)
 { 
     sem_wait(&mutex); 
-    for(int i = N - 1; i >= 0; i--){
+    for(int i = 0; i < N && VET[i] != 0;){
         if(primo(VET[i]) == 1){
             moveVetorEsquerda(i + 1);
+        }else{
+            i++;
         }
     }
     sem_post(&mutex);
@@ -63,12 +67,10 @@ int main()
     }
     
     //array antes 
-    /*
     for(int i = 0;VET[i] != 0; i++){
-        printf("%d \n", VET[i]);
+        printf("%d - %d \n", VET[i], i);
     }
     printf("\n");
-    */
 
     sem_init(&mutex, 0, 1);
     pthread_t t1,t2;
@@ -79,12 +81,11 @@ int main()
     sem_destroy(&mutex);
     
     //array depois
-    /*
     for(int i = 0;VET[i] != 0; i++){
-	if(VET[i] % 2 == 0 || primo(VET[i]) == 1)
-        	printf("%d \n", VET[i]);
+	//if(VET[i] % 2 == 0 || primo(VET[i]) == 1)
+        	printf("%d - %d \n", VET[i], i);
     }
-    */
+    
 
     return 0;
 }
